@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS PROLIJO (CENTRADO VERTICAL FORZADO) ---
+# --- 🎨 CSS MODO "FUERZA BRUTA" ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -14,73 +14,61 @@ estilo_css = """
 html, body, [class*="css"] { font-family: 'Montserrat', sans-serif !important; }
 .stApp { background-color: #D91A1A !important; }
 
-/* Evita que el formulario se estire feo en computadores grandes */
 .block-container { max-width: 850px !important; padding-top: 2rem !important; }
 
-/* --- ESPACIADO DE ETIQUETAS --- */
-div[data-testid="stWidgetLabel"] {
-    margin-bottom: 8px !important; 
-}
+/* Títulos de las casillas */
+div[data-testid="stWidgetLabel"] { margin-bottom: 5px !important; }
 div[data-testid="stWidgetLabel"] p {
     color: white !important; font-weight: 500 !important; text-transform: uppercase; font-size: 0.9rem !important;
 }
 
-/* Casillas Cuadradas y Prolijas */
+/* Forzar fondos blancos y quitar bordes redondeados en todo */
 div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-baseweb="textarea"] > div {
-    background-color: #ffffff !important; border-radius: 0px !important; min-height: 48px !important; border: none !important;
-    margin-bottom: 15px !important; 
+    background-color: #ffffff !important; border-radius: 0px !important; border: none !important;
 }
 
-/* --- SOLUCIÓN DEFINITIVA: CENTRADO FLEX PARA INPUTS DE UNA LÍNEA --- */
-div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-    display: flex !important; 
-    align-items: center !important; /* Fuerza el contenido a quedarse en el medio vertical */
+/* --- SOLUCIÓN CENTRADO DE TEXTO (TEXTOS DE 1 LÍNEA) --- */
+input[type="text"] {
+    color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important;
+    height: 48px !important;
+    padding-top: 12px !important; /* Relleno superior para empujar al centro */
+    padding-bottom: 12px !important; /* Relleno inferior para empujar al centro */
+    padding-left: 15px !important;
 }
 
-div[data-baseweb="input"] input {
-    color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
-    padding-left: 15px !important; 
-    padding-top: 12px !important; /* Relleno superior equilibrado */
-    padding-bottom: 12px !important; /* Relleno inferior equilibrado */
-    line-height: normal !important;
-}
-
-/* --- SOLUCIÓN: CUADRO GRANDE DE DETALLE --- */
-div[data-baseweb="textarea"] > div {
-    align-items: flex-start !important; /* Evita que el cuadro grande se centre raro */
-}
+/* --- SOLUCIÓN TEXT AREA (DETALLE) --- */
 textarea {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
-    padding-left: 15px !important;
-    padding-top: 15px !important; 
-    line-height: 1.5 !important;
+    padding-top: 15px !important; padding-left: 15px !important; line-height: 1.5 !important;
 }
 
-/* Solución para selectores (Dropdowns) en la barra principal */
-div[data-baseweb="select"] span, div[data-baseweb="select"] div {
-    color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important; 
-    text-align: left !important;
+/* Textos de los selectores */
+div[data-baseweb="select"] span {
+    color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important; 
 }
-
-/* --- SOLUCIÓN AL MENÚ NEGRO REBELDE --- */
+/* Menú desplegable fondo blanco */
 ul[data-baseweb="menu"] { background-color: #ffffff !important; }
-ul[data-baseweb="menu"] li, ul[data-baseweb="menu"] span {
-    background-color: #ffffff !important;
-    color: #333333 !important; 
-    font-weight: 500 !important;
-}
+ul[data-baseweb="menu"] li { background-color: #ffffff !important; color: #333333 !important; font-weight: 500 !important; }
 div[data-baseweb="select"] svg { fill: #333333 !important; }
 
-/* --- BOTÓN ENVIAR LARGO --- */
-div.stButton > button:first-child {
-    background-color: #ffffff !important; color: #D91A1A !important; border-radius: 0px !important;
-    font-weight: 700 !important; text-transform: uppercase; width: 100%; height: 50px !important;
-    margin-top: 10px !important;
+/* --- SOLUCIÓN BOTÓN LARGO DENTRO DE FORMULARIO --- */
+div[data-testid="stFormSubmitButton"] {
+    width: 100% !important; /* Contenedor al 100% */
 }
-
-/* Caja de mensaje prolija */
-div[data-testid="stCodeBlock"] { background-color: #ffffff !important; border-radius: 0px !important; }
-div[data-testid="stCodeBlock"] code { color: #000000 !important; font-weight: 600 !important; }
+div[data-testid="stFormSubmitButton"] > button {
+    width: 100% !important; /* Botón al 100% */
+    background-color: #ffffff !important; 
+    color: #D91A1A !important; 
+    border-radius: 0px !important;
+    border: none !important;
+    font-weight: 800 !important; 
+    font-size: 1.2rem !important;
+    height: 55px !important;
+    margin-top: 15px !important;
+}
+div[data-testid="stFormSubmitButton"] > button p {
+    font-weight: 800 !important; font-size: 1.2rem !important; color: #D91A1A !important;
+}
 </style>
 """
 st.markdown(estilo_css, unsafe_allow_html=True)
@@ -108,7 +96,7 @@ with st.form("registro_base", clear_on_submit=True):
     
     # --- PANEL DE CONTROL DE TURNOS (DISEÑO PRO) ---
     indice_actual = st.session_state.indice_vendedor
-    proximo_indice = (indice_actual + 1) % (len(EQUIPO) - 1) # Evita saltar a "N/A"
+    proximo_indice = (indice_actual + 1) % (len(EQUIPO) - 1) 
     
     panel_turno = f"""
     <div style="background-color: #ffffff; padding: 15px; margin-bottom: 20px; text-align: center; border-left: 6px solid #333333;">
@@ -121,7 +109,6 @@ with st.form("registro_base", clear_on_submit=True):
     """
     st.markdown(panel_turno, unsafe_allow_html=True)
     
-    # --- LA SOLUCIÓN DEL DESFASE (Llave Dinámica) ---
     llave_dinamica = f"selector_{indice_actual}"
     vendedor_final = st.selectbox("CONFIRMAR ASIGNACIÓN (Puedes cambiarlo manualmente):", options=EQUIPO, index=indice_actual, key=llave_dinamica)
     
@@ -166,7 +153,7 @@ if submit:
                 
                 # Rotar vendedor
                 st.session_state.indice_vendedor = (EQUIPO.index(vendedor_final) + 1) % len(EQUIPO)
-                st.rerun() # Fuerza a la página a actualizar
+                st.rerun()
         except Exception as e: 
             st.error(f"Error: {e}")
     else: 
