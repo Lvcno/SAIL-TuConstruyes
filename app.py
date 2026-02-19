@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS PROLIJO (ESPACIADO MEJORADO Y BOTÓN LARGO) ---
+# --- 🎨 CSS PROLIJO (CENTRADOS VERTICALES PERFECTOS) ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -17,27 +17,39 @@ html, body, [class*="css"] { font-family: 'Montserrat', sans-serif !important; }
 /* Evita que el formulario se estire feo en computadores grandes */
 .block-container { max-width: 850px !important; padding-top: 2rem !important; }
 
-/* --- ESPACIADO DE ETIQUETAS (SOLUCIÓN A TEXTO APLASTADO) --- */
+/* --- ESPACIADO DE ETIQUETAS --- */
 div[data-testid="stWidgetLabel"] {
-    margin-bottom: 8px !important; /* Da aire entre el título y la casilla */
+    margin-bottom: 8px !important; 
 }
 div[data-testid="stWidgetLabel"] p {
     color: white !important; font-weight: 500 !important; text-transform: uppercase; font-size: 0.9rem !important;
 }
 
-/* Casillas Cuadradas y Prolijas con separación inferior */
+/* Casillas Cuadradas y Prolijas */
 div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-baseweb="textarea"] > div {
     background-color: #ffffff !important; border-radius: 0px !important; min-height: 48px !important; border: none !important;
-    margin-bottom: 15px !important; /* Separa cada fila de la siguiente */
+    margin-bottom: 15px !important; 
 }
 
-/* Texto general dentro de las casillas */
-div[data-baseweb="input"] input, textarea {
+/* --- SOLUCIÓN: CENTRADO VERTICAL PARA INPUTS DE UNA LÍNEA --- */
+div[data-baseweb="input"] input {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
-    padding-left: 15px !important; line-height: 1.5 !important;
+    padding-left: 15px !important; 
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    height: 48px !important;
+    line-height: 48px !important; /* Esto centra el texto perfectamente al medio */
 }
 
-/* --- SOLUCIÓN PARA SELECTORES EN BLANCO --- */
+/* --- SOLUCIÓN: CUADRO GRANDE DE DETALLE --- */
+textarea {
+    color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
+    padding-left: 15px !important;
+    padding-top: 15px !important; /* Da un respiro arriba para que no choque */
+    line-height: 1.5 !important;
+}
+
+/* Solución para selectores (Dropdowns) */
 div[data-baseweb="select"] span, div[data-baseweb="select"] div {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important; 
     text-align: left !important;
@@ -57,7 +69,7 @@ div[data-baseweb="select"] svg {
 div.stButton > button:first-child {
     background-color: #ffffff !important; color: #D91A1A !important; border-radius: 0px !important;
     font-weight: 700 !important; text-transform: uppercase; width: 100%; height: 50px !important;
-    margin-top: 10px !important; /* Un poco de aire extra antes del botón */
+    margin-top: 10px !important;
 }
 
 /* Caja de mensaje prolija */
@@ -124,7 +136,7 @@ if submit:
                 
                 # --- MENSAJE WHATSAPP ---
                 link_wsp = f"https://wa.me/{telefono.replace(' ', '').replace('+', '')}"
-                msg = f"🌟 *¡NUEVO LEAD ASIGNADO!* 🌟\n\n👤 *CLIENTE:* {nombre}\n🏗️ *INTERÉS:* {producto}\n📧 *EMAIL:* {correo if correo else 'N/A'}\n💬 *DETALLE:* {detalle}\n\n👉 *CONTACTAR AHORA:*\n📱 {link_wsp} \n🚀 *Asignado a:* @{vendedor_final}\n¡Mucho éxito! 🎯"
+                msg = f"🌟 *¡NUEVO LEAD ASIGNADO!* 🌟\n\n👤 *CLIENTE:* {nombre}\n🏗️ *INTERÉS:* {producto}\n📧 *EMAIL:* {correo if correo else 'N/A'}\n💬 *DETALLE:* {detalle}\n\n👉 *CONTACTAR AHORA:*\n📱 {link_wsp} \n\n🚀 *Asignado a:* @{vendedor_final}\n¡Mucho éxito! 🎯"
                 st.markdown("<p style='color: white; font-weight: 700; margin-top: 15px;'>COPIA EL MENSAJE:</p>", unsafe_allow_html=True)
                 st.code(msg, language="text")
                 
