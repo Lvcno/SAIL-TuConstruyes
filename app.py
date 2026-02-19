@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS LIMPIO Y SIMPLIFICADO ---
+# --- 🎨 CSS ANTI-RENDICIÓN ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -30,19 +30,15 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     background-color: #ffffff !important; border-radius: 0px !important; border: none !important;
 }
 
-/* --- PLAN C: CENTRADO DEFINITIVO CON FLEXBOX --- */
-div[data-baseweb="input"] > div {
-    display: flex !important;
-    align-items: center !important; /* Alineación vertical forzada al centro */
-    height: 48px !important;
-}
-
+/* --- LA MAGIA DEL CENTRADO NATURAL --- */
+/* Quitamos el "height" forzado y empujamos con padding igualado arriba y abajo */
 input[type="text"] {
-    color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important;
-    padding: 0px 15px !important; 
-    margin-top: auto !important; /* Empuja por arriba */
-    margin-bottom: auto !important; /* Empuja por abajo */
-    line-height: normal !important;
+    color: #333333 !important; 
+    font-weight: 600 !important; 
+    -webkit-text-fill-color: #333333 !important;
+    padding-top: 14px !important; 
+    padding-bottom: 14px !important; 
+    padding-left: 15px !important;
 }
 
 /* Text area (Detalle) */
@@ -52,12 +48,12 @@ textarea {
 }
 
 /* Corrección de la lista de Canal */
-div[data-baseweb="select"] span { color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important; }
+div[data-baseweb="select"] span { color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important; padding-top: 3px !important; }
 ul[data-baseweb="menu"] { background-color: #ffffff !important; }
 ul[data-baseweb="menu"] li { background-color: #ffffff !important; color: #333333 !important; font-weight: 500 !important; }
 div[data-baseweb="select"] svg { fill: #333333 !important; }
 
-/* Estilo del botón (El ancho se controla ahora desde Python) */
+/* Estilo del botón */
 div[data-testid="stFormSubmitButton"] > button {
     background-color: #ffffff !important; color: #D91A1A !important; border-radius: 0px !important;
     border: none !important; height: 55px !important; margin-top: 15px !important;
