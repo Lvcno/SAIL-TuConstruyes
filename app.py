@@ -113,12 +113,6 @@ if submit:
                 fila_base = [nombre, correo, telefono, fecha_hora, canal, vendedor_final, "", producto, detalle]
                 ws.update(range_name=f"C{fila_destino}:K{fila_destino}", values=[fila_base], value_input_option="USER_ENTERED")
                 
-                # Mensaje WhatsApp
-                link_wsp = f"https://wa.me/{telefono.replace(' ', '').replace('+', '')}"
-                msg = f"🌟 *¡NUEVO LEAD ASIGNADO!* 🌟\n\n👤 *CLIENTE:* {nombre}\n🏗️ *INTERÉS:* {producto}\n📧 *EMAIL:* {correo if correo else 'N/A'}\n💬 *DETALLE:* {detalle}\n\n👉 *CONTACTAR AHORA:*\n📱 {link_wsp}\n-------------------------------------------\n🚀 *Asignado a:* @{vendedor_final}\n¡Mucho éxito! 🎯"
-                st.markdown("<p style='color: white; font-weight: 700; margin-top: 15px;'>COPIA EL MENSAJE:</p>", unsafe_allow_html=True)
-                st.code(msg, language="text")
-                
                 # Rotar vendedor
                 st.session_state.indice_vendedor = (EQUIPO.index(vendedor_final) + 1) % len(EQUIPO)
         except Exception as e: 
