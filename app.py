@@ -80,22 +80,28 @@ def conectar_control_mk():
 EQUIPO = ["Lysset", "Daniel", "John", "Danitza", "Matías", "N/A"]
 if 'indice_vendedor' not in st.session_state: st.session_state.indice_vendedor = 0
 
-# --- FORMULARIO POR FILAS ---
+# --- FORMULARIO REORGANIZADO (LÓGICA HUMANA) ---
 with st.form("registro_base", clear_on_submit=True):
+    # Asignación siempre arriba
     vendedor_final = st.selectbox("ASIGNAR A:", options=EQUIPO, index=st.session_state.indice_vendedor)
     
-    col1, col2 = st.columns(2)
-    nombre = col1.text_input("NOMBRE CLIENTE")
-    producto = col2.text_input("PRODUCTO DE INTERÉS")
+    # FILA 1: Contacto Rápido
+    c_contacto1, c_contacto2 = st.columns(2)
+    nombre = c_contacto1.text_input("NOMBRE CLIENTE")
+    telefono = c_contacto2.text_input("TELÉFONO (Sin +569)", placeholder="Ej: 912345678")
     
-    col3, col4 = st.columns(2)
-    telefono = col3.text_input("TELÉFONO (569...)")
-    canal = col4.selectbox("CANAL", ["Cliengo", "Llamada", "WhatsApp", "WEB", "Sucursal"])
+    # FILA 2: Datos Secundarios
+    c_canal1, c_canal2 = st.columns(2)
+    correo = c_canal1.text_input("CORREO", placeholder="ejemplo@correo.com")
+    canal = c_canal2.selectbox("CANAL", ["Cliengo", "Llamada", "WhatsApp", "WEB", "Sucursal"])
     
-    col5, col6 = st.columns(2)
-    correo = col5.text_input("CORREO")
-    detalle = col6.text_area("DETALLE ADICIONAL", height=68)
+    # FILA 3: Comercial (Ancho completo para escribir cómodo)
+    producto = st.text_input("PRODUCTO DE INTERÉS", placeholder="Ej: Planchas OSB, PV4...")
+    
+    # FILA 4: Detalle (Ancho completo y más alto)
+    detalle = st.text_area("DETALLE ADICIONAL", height=100, placeholder="Escribe aquí notas importantes...")
 
+    # Botón ancho completo al final
     submit = st.form_submit_button("🚀 PROCESAR Y GUARDAR")
 
 if submit:
@@ -108,7 +114,7 @@ if submit:
                 
                 fecha_hora = datetime.now().strftime("%d/%m/%Y %H:%M")
                 
-                # --- CORRECCIÓN FINAL: GUARDAMOS SOLO HASTA COLUMNA H ---
+                # --- GUARDAMOS SOLO HASTA COLUMNA H ---
                 fila_base = [nombre, correo, telefono, fecha_hora, canal, vendedor_final]
                 ws.update(range_name=f"C{fila_destino}:H{fila_destino}", values=[fila_base], value_input_option="USER_ENTERED")
                 
