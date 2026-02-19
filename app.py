@@ -38,14 +38,14 @@ div[data-baseweb="input"] input {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
     height: 48px !important;
-    line-height: 48px !important; /* Esto centra el texto perfectamente al medio */
+    line-height: 48px !important;
 }
 
 /* --- SOLUCIÓN: CUADRO GRANDE DE DETALLE --- */
 textarea {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
     padding-left: 15px !important;
-    padding-top: 15px !important; /* Da un respiro arriba para que no choque */
+    padding-top: 15px !important; 
     line-height: 1.5 !important;
 }
 
@@ -78,9 +78,6 @@ div.stButton > button:first-child {
 /* Caja de mensaje prolija */
 div[data-testid="stCodeBlock"] { background-color: #ffffff !important; border-radius: 0px !important; }
 div[data-testid="stCodeBlock"] code { color: #000000 !important; font-weight: 600 !important; }
-
-/* Estilo para el aviso del turno */
-.stAlert { background-color: rgba(255,255,255,0.1) !important; color: white !important; border: 1px solid white !important; }
 </style>
 """
 st.markdown(estilo_css, unsafe_allow_html=True)
@@ -106,11 +103,20 @@ if 'indice_vendedor' not in st.session_state: st.session_state.indice_vendedor =
 # --- FORMULARIO REORGANIZADO ---
 with st.form("registro_base", clear_on_submit=True):
     
-    # --- PANEL DE CONTROL DE TURNOS ---
+    # --- PANEL DE CONTROL DE TURNOS (DISEÑO PRO) ---
     indice_actual = st.session_state.indice_vendedor
     proximo_indice = (indice_actual + 1) % (len(EQUIPO) - 1) # Evita saltar a "N/A"
     
-    st.info(f"🔄 **TURNO ACTUAL:** {EQUIPO[indice_actual]} ➔ **PRÓXIMO EN FILA:** {EQUIPO[proximo_indice]}")
+    panel_turno = f"""
+    <div style="background-color: #ffffff; padding: 15px; margin-bottom: 20px; text-align: center; border-left: 6px solid #333333;">
+        <p style="margin: 0; color: #333333; font-size: 1.1rem; font-weight: 600;">
+            🔄 TURNO ACTUAL: <span style="color: #D91A1A; font-weight: 800; font-size: 1.2rem;">{EQUIPO[indice_actual].upper()}</span> 
+            <span style="color: #cccccc; margin: 0 15px;">➔</span> 
+            <span style="font-size: 0.9rem; color: #666666;">PRÓXIMO: {EQUIPO[proximo_indice]}</span>
+        </p>
+    </div>
+    """
+    st.markdown(panel_turno, unsafe_allow_html=True)
     
     vendedor_final = st.selectbox("CONFIRMAR ASIGNACIÓN (Puedes cambiarlo manualmente):", options=EQUIPO, index=indice_actual)
     
