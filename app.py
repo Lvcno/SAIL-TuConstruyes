@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS PROLIJO (AJUSTADO PARA TODO TIPO DE PANTALLAS) ---
+# --- 🎨 CSS PROLIJO (AJUSTADO PARA TODO TIPO DE PANTALLAS Y TEXTOS) ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -26,10 +26,26 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     background-color: #ffffff !important; border-radius: 0px !important; min-height: 48px !important; border: none !important;
 }
 
-/* Texto dentro de las casillas */
-div[data-baseweb="input"] input, div[data-baseweb="select"] span, textarea {
+/* Texto general dentro de las casillas */
+div[data-baseweb="input"] input, textarea {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
     padding-left: 15px !important; line-height: 1.5 !important;
+}
+
+/* --- SOLUCIÓN PARA SELECTORES EN BLANCO --- */
+div[data-baseweb="select"] span, div[data-baseweb="select"] div {
+    color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important; 
+    text-align: left !important;
+}
+
+/* Color de las opciones al abrir el menú desplegable */
+ul[data-baseweb="menu"] li, ul[data-baseweb="menu"] span {
+    color: #333333 !important; font-weight: 500 !important;
+}
+
+/* Color de la flecha del selector */
+div[data-baseweb="select"] svg {
+    fill: #333333 !important;
 }
 
 /* Botón Procesar */
