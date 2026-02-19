@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS PROLIJO (CENTRADOS VERTICALES PERFECTOS) ---
+# --- 🎨 CSS PROLIJO ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -49,15 +49,18 @@ textarea {
     line-height: 1.5 !important;
 }
 
-/* Solución para selectores (Dropdowns) */
+/* Solución para selectores (Dropdowns) en la barra principal */
 div[data-baseweb="select"] span, div[data-baseweb="select"] div {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important; 
     text-align: left !important;
 }
 
-/* Color de las opciones al abrir el menú desplegable */
+/* --- SOLUCIÓN AL MENÚ NEGRO REBELDE --- */
+ul[data-baseweb="menu"] { background-color: #ffffff !important; }
 ul[data-baseweb="menu"] li, ul[data-baseweb="menu"] span {
-    color: #333333 !important; font-weight: 500 !important;
+    background-color: #ffffff !important;
+    color: #333333 !important; 
+    font-weight: 500 !important;
 }
 
 /* Color de la flecha del selector */
@@ -75,6 +78,9 @@ div.stButton > button:first-child {
 /* Caja de mensaje prolija */
 div[data-testid="stCodeBlock"] { background-color: #ffffff !important; border-radius: 0px !important; }
 div[data-testid="stCodeBlock"] code { color: #000000 !important; font-weight: 600 !important; }
+
+/* Estilo para el aviso del turno */
+.stAlert { background-color: rgba(255,255,255,0.1) !important; color: white !important; border: 1px solid white !important; }
 </style>
 """
 st.markdown(estilo_css, unsafe_allow_html=True)
@@ -99,7 +105,14 @@ if 'indice_vendedor' not in st.session_state: st.session_state.indice_vendedor =
 
 # --- FORMULARIO REORGANIZADO ---
 with st.form("registro_base", clear_on_submit=True):
-    vendedor_final = st.selectbox("ASIGNAR A:", options=EQUIPO, index=st.session_state.indice_vendedor)
+    
+    # --- PANEL DE CONTROL DE TURNOS ---
+    indice_actual = st.session_state.indice_vendedor
+    proximo_indice = (indice_actual + 1) % (len(EQUIPO) - 1) # Evita saltar a "N/A"
+    
+    st.info(f"🔄 **TURNO ACTUAL:** {EQUIPO[indice_actual]} ➔ **PRÓXIMO EN FILA:** {EQUIPO[proximo_indice]}")
+    
+    vendedor_final = st.selectbox("CONFIRMAR ASIGNACIÓN (Puedes cambiarlo manualmente):", options=EQUIPO, index=indice_actual)
     
     # FILA 1
     c_contacto1, c_contacto2 = st.columns(2)
@@ -142,6 +155,7 @@ if submit:
                 
                 # Rotar vendedor
                 st.session_state.indice_vendedor = (EQUIPO.index(vendedor_final) + 1) % len(EQUIPO)
+                st.rerun() # Fuerza a la página a actualizar la barrita visual del turno inmediatamente
         except Exception as e: 
             st.error(f"Error: {e}")
     else: 
