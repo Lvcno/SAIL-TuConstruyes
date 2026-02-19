@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS ANTI-RENDICIÓN ---
+# --- 🎨 CSS DEFINITIVO ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -30,8 +30,7 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     background-color: #ffffff !important; border-radius: 0px !important; border: none !important;
 }
 
-/* --- LA MAGIA DEL CENTRADO NATURAL --- */
-/* Quitamos el "height" forzado y empujamos con padding igualado arriba y abajo */
+/* --- CENTRADO NATURAL PARA TEXTOS --- */
 input[type="text"] {
     color: #333333 !important; 
     font-weight: 600 !important; 
@@ -47,8 +46,12 @@ textarea {
     padding: 15px !important; line-height: 1.5 !important;
 }
 
-/* Corrección de la lista de Canal */
-div[data-baseweb="select"] span { color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important; padding-top: 3px !important; }
+/* --- SOLUCIÓN LETRA FANTASMA EN SELECTOR (CANAL) --- */
+div[data-baseweb="select"] div, div[data-baseweb="select"] span { 
+    color: #333333 !important; 
+    font-weight: 600 !important; 
+    -webkit-text-fill-color: #333333 !important; 
+}
 ul[data-baseweb="menu"] { background-color: #ffffff !important; }
 ul[data-baseweb="menu"] li { background-color: #ffffff !important; color: #333333 !important; font-weight: 500 !important; }
 div[data-baseweb="select"] svg { fill: #333333 !important; }
