@@ -114,7 +114,7 @@ if submit:
                 
                 # --- MENSAJE WHATSAPP ---
                 link_wsp = f"https://wa.me/{telefono.replace(' ', '').replace('+', '')}"
-                msg = f"🌟 *¡NUEVO LEAD ASIGNADO!* 🌟\n\n👤 *CLIENTE:* {nombre}\n🏗️ *INTERÉS:* {producto}\n📧 *EMAIL:* {correo if correo else 'N/A'}\n💬 *DETALLE:* {detalle}\n\n👉 *CONTACTAR AHORA:*\n📱 {link_wsp}\n-------------------------------------------\n🚀 *Asignado a:* @{vendedor_final}\n¡Mucho éxito! 🎯"
+                msg = f"🌟 *¡NUEVO LEAD ASIGNADO!* 🌟\n\n👤 *CLIENTE:* {nombre}\n🏗️ *INTERÉS:* {producto}\n📧 *EMAIL:* {correo if correo else 'N/A'}\n💬 *DETALLE:* {detalle}\n\n👉 *CONTACTAR AHORA:*\n📱 {link_wsp} \n🚀 *Asignado a:* @{vendedor_final}\n¡Mucho éxito! 🎯"
                 st.markdown("<p style='color: white; font-weight: 700; margin-top: 15px;'>COPIA EL MENSAJE:</p>", unsafe_allow_html=True)
                 st.code(msg, language="text")
                 
