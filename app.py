@@ -30,12 +30,19 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     background-color: #ffffff !important; border-radius: 0px !important; border: none !important;
 }
 
-/* --- SOLUCIÓN CENTRADO DE TEXTO (ADIÓS PIEDRA EN EL ZAPATO) --- */
+/* --- PLAN C: CENTRADO DEFINITIVO CON FLEXBOX --- */
+div[data-baseweb="input"] > div {
+    display: flex !important;
+    align-items: center !important; /* Alineación vertical forzada al centro */
+    height: 48px !important;
+}
+
 input[type="text"] {
     color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important;
-    padding: 0px 15px !important; /* 0 espacio arriba y abajo, 15px a los lados */
-    height: 48px !important;
-    line-height: 48px !important; /* Al coincidir con la altura, se centra mágicamente */
+    padding: 0px 15px !important; 
+    margin-top: auto !important; /* Empuja por arriba */
+    margin-bottom: auto !important; /* Empuja por abajo */
+    line-height: normal !important;
 }
 
 /* Text area (Detalle) */
