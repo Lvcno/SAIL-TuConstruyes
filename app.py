@@ -6,7 +6,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="SAIL 3.0 - Gestión de Leads", page_icon=None, layout="centered")
 
-# --- 🎨 CSS PROLIJO ---
+# --- 🎨 CSS PROLIJO (CENTRADO VERTICAL FORZADO) ---
 estilo_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -31,17 +31,24 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     margin-bottom: 15px !important; 
 }
 
-/* --- SOLUCIÓN: CENTRADO VERTICAL PARA INPUTS DE UNA LÍNEA --- */
+/* --- SOLUCIÓN DEFINITIVA: CENTRADO FLEX PARA INPUTS DE UNA LÍNEA --- */
+div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
+    display: flex !important; 
+    align-items: center !important; /* Fuerza el contenido a quedarse en el medio vertical */
+}
+
 div[data-baseweb="input"] input {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
     padding-left: 15px !important; 
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    height: 48px !important;
-    line-height: 48px !important;
+    padding-top: 12px !important; /* Relleno superior equilibrado */
+    padding-bottom: 12px !important; /* Relleno inferior equilibrado */
+    line-height: normal !important;
 }
 
 /* --- SOLUCIÓN: CUADRO GRANDE DE DETALLE --- */
+div[data-baseweb="textarea"] > div {
+    align-items: flex-start !important; /* Evita que el cuadro grande se centre raro */
+}
 textarea {
     color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
     padding-left: 15px !important;
@@ -62,11 +69,7 @@ ul[data-baseweb="menu"] li, ul[data-baseweb="menu"] span {
     color: #333333 !important; 
     font-weight: 500 !important;
 }
-
-/* Color de la flecha del selector */
-div[data-baseweb="select"] svg {
-    fill: #333333 !important;
-}
+div[data-baseweb="select"] svg { fill: #333333 !important; }
 
 /* --- BOTÓN ENVIAR LARGO --- */
 div.stButton > button:first-child {
@@ -118,7 +121,9 @@ with st.form("registro_base", clear_on_submit=True):
     """
     st.markdown(panel_turno, unsafe_allow_html=True)
     
-    vendedor_final = st.selectbox("CONFIRMAR ASIGNACIÓN (Puedes cambiarlo manualmente):", options=EQUIPO, index=indice_actual)
+    # --- LA SOLUCIÓN DEL DESFASE (Llave Dinámica) ---
+    llave_dinamica = f"selector_{indice_actual}"
+    vendedor_final = st.selectbox("CONFIRMAR ASIGNACIÓN (Puedes cambiarlo manualmente):", options=EQUIPO, index=indice_actual, key=llave_dinamica)
     
     # FILA 1
     c_contacto1, c_contacto2 = st.columns(2)
@@ -161,7 +166,7 @@ if submit:
                 
                 # Rotar vendedor
                 st.session_state.indice_vendedor = (EQUIPO.index(vendedor_final) + 1) % len(EQUIPO)
-                st.rerun() # Fuerza a la página a actualizar la barrita visual del turno inmediatamente
+                st.rerun() # Fuerza a la página a actualizar
         except Exception as e: 
             st.error(f"Error: {e}")
     else: 
