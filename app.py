@@ -30,10 +30,12 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     background-color: #ffffff !important; border-radius: 0px !important; border: none !important;
 }
 
-/* Centrado de texto para inputs */
+/* --- SOLUCIÓN CENTRADO DE TEXTO (ADIÓS PIEDRA EN EL ZAPATO) --- */
 input[type="text"] {
     color: #333333 !important; font-weight: 600 !important; -webkit-text-fill-color: #333333 !important;
-    padding: 12px 15px !important; height: 48px !important;
+    padding: 0px 15px !important; /* 0 espacio arriba y abajo, 15px a los lados */
+    height: 48px !important;
+    line-height: 48px !important; /* Al coincidir con la altura, se centra mágicamente */
 }
 
 /* Text area (Detalle) */
@@ -83,7 +85,7 @@ with st.form("registro_base", clear_on_submit=True):
     
     # --- LA SOLUCIÓN INTUITIVA: Botones en lugar de lista ---
     vendedor_final = st.radio("ASIGNAR A:", options=EQUIPO, index=st.session_state.indice_vendedor, horizontal=True)
-    st.markdown("<br>", unsafe_allow_html=True) # Un pequeño salto de línea para separar
+    st.markdown("<br>", unsafe_allow_html=True) 
     
     # FILA 1
     c_contacto1, c_contacto2 = st.columns(2)
@@ -101,7 +103,7 @@ with st.form("registro_base", clear_on_submit=True):
     # FILA 4 (Detalle alto)
     detalle = st.text_area("DETALLE ADICIONAL", height=100, placeholder="Escribe aquí notas importantes...")
 
-    # --- BOTÓN ENVIAR LARGO (Controlado por use_container_width) ---
+    # --- BOTÓN ENVIAR LARGO ---
     submit = st.form_submit_button("ENVIAR", use_container_width=True)
 
 if submit:
@@ -124,7 +126,7 @@ if submit:
                 st.markdown("<p style='color: white; font-weight: 700; margin-top: 15px;'>COPIA EL MENSAJE:</p>", unsafe_allow_html=True)
                 st.code(msg, language="text")
                 
-                # Rotar vendedor en segundo plano (para que ya esté listo en el próximo envío)
+                # Rotar vendedor
                 st.session_state.indice_vendedor = (EQUIPO.index(vendedor_final) + 1) % len(EQUIPO)
                 st.rerun()
         except Exception as e: 
