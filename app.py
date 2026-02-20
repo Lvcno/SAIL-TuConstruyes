@@ -30,20 +30,25 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div, div[data-base
     background-color: #ffffff !important; border-radius: 0px !important; border: none !important;
 }
 
-/* --- CENTRADO NATURAL PARA TEXTOS --- */
+/* --- CENTRADO NATURAL PARA TEXTOS Y CURSOR NEGRO --- */
 input[type="text"] {
     color: #333333 !important; 
     font-weight: 600 !important; 
     -webkit-text-fill-color: #333333 !important;
+    caret-color: #333333 !important; /* SOLUCIÓN: BARRITA PARPADEANTE NEGRA */
     padding-top: 14px !important; 
     padding-bottom: 14px !important; 
     padding-left: 15px !important;
 }
 
-/* Text area (Detalle) */
+/* Text area (Detalle) Y CURSOR NEGRO */
 textarea {
-    color: #333333 !important; font-weight: 500 !important; -webkit-text-fill-color: #333333 !important;
-    padding: 15px !important; line-height: 1.5 !important;
+    color: #333333 !important; 
+    font-weight: 500 !important; 
+    -webkit-text-fill-color: #333333 !important;
+    caret-color: #333333 !important; /* SOLUCIÓN: BARRITA PARPADEANTE NEGRA */
+    padding: 15px !important; 
+    line-height: 1.5 !important;
 }
 
 /* --- SOLUCIÓN LETRA FANTASMA EN SELECTOR (CANAL) --- */
