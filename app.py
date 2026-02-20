@@ -84,7 +84,10 @@ def conectar_control_mk():
     return client.open("Control de Leads y Cierres").worksheet("Control MK")
 
 EQUIPO = ["Lysset", "Daniel", "John", "Danitza", "Matías", "N/A"]
+
+# --- MEMORIA DE LA APLICACIÓN ---
 if 'indice_vendedor' not in st.session_state: st.session_state.indice_vendedor = 0
+if 'ultimo_mensaje' not in st.session_state: st.session_state.ultimo_mensaje = None
 
 # --- FORMULARIO REORGANIZADO ---
 with st.form("registro_base", clear_on_submit=True):
@@ -120,23 +123,30 @@ if submit:
                 columna_c = ws.col_values(3)
                 fila_destino = max(len(columna_c) + 1, 8)
                 
-                # --- AQUÍ ESTÁ EL CAMBIO: SOLO FECHA ---
                 fecha_actual = datetime.now().strftime("%d/%m/%Y")
                 
                 # --- GUARDADO HASTA COLUMNA H ---
                 fila_base = [nombre, correo, telefono, fecha_actual, canal, vendedor_final]
                 ws.update(range_name=f"C{fila_destino}:H{fila_destino}", values=[fila_base], value_input_option="USER_ENTERED")
                 
-                # --- MENSAJE WHATSAPP ---
+                # --- GUARDAR MENSAJE EN MEMORIA PARA QUE SOBREVIVA AL RECARGO ---
                 link_wsp = f"https://wa.me/{telefono.replace(' ', '').replace('+', '')}"
                 msg = f"🌟 *¡NUEVO LEAD ASIGNADO!* 🌟\n\n👤 *CLIENTE:* {nombre}\n🏗️ *INTERÉS:* {producto}\n📧 *EMAIL:* {correo if correo else 'N/A'}\n💬 *DETALLE:* {detalle}\n\n👉 *CONTACTAR AHORA:*\n📱 {link_wsp} \n\n🚀 *Asignado a:* @{vendedor_final}\n¡Mucho éxito! 🎯"
-                st.markdown("<p style='color: white; font-weight: 700; margin-top: 15px;'>COPIA EL MENSAJE:</p>", unsafe_allow_html=True)
-                st.code(msg, language="text")
+                
+                st.session_state.ultimo_mensaje = msg
                 
                 # Rotar vendedor
                 st.session_state.indice_vendedor = (EQUIPO.index(vendedor_final) + 1) % len(EQUIPO)
-                st.rerun()
+                st.rerun() # Ahora recarga la página, ¡pero el mensaje está a salvo en la memoria!
         except Exception as e: 
             st.error(f"Error: {e}")
     else: 
         st.warning("⚠️ Nombre y Teléfono obligatorios.")
+
+# --- MOSTRAR EL MENSAJE GUARDADO (FUERA DEL FORMULARIO) ---
+if st.session_state.ultimo_mensaje:
+    st.success("¡Lead guardado en la planilla exitosamente!")
+    st.markdown("<p style='color: white; font-weight: 700; margin-top: 5px;'>COPIA EL MENSAJE:</p>", unsafe_allow_html=True)
+    st.code(st.session_state.ultimo_mensaje, language="text")
+    # Borramos el mensaje de la memoria para que no se quede pegado eternamente
+    st.session_state.ultimo_mensaje = None
